@@ -1,5 +1,6 @@
 export const APP_CONFIG = {
-  gestureHoldMs: 560,
+  gestureHoldMs: 480,
+  lockHoldMs: 720,
   gestureCooldownMs: 850,
   inferenceIntervalMs: 34,
   handLostCancelMs: 650,

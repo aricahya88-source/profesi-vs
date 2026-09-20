@@ -59,7 +59,11 @@ let gestureHold: Record<PlayerId, HoldState> = {
 let gestureCooldownUntil: Record<PlayerId, number> = { 1: 0, 2: 0 };
 const gestureDrag: Partial<Record<PlayerId, DragState>> = {};
 const pointerSelected: Partial<Record<PlayerId, string>> = {};
-const AUTO_ADVANCE_MS = 850;
+const AUTO_ADVANCE_MS = 500;
+const CHAPTER_DURATION_MS = 7 * 60 * 1000;
+let chapterTimerId: number | null = null;
+let chapterEndsAt = 0;
+let chapterTimedOut = false;
 
 app.innerHTML = `
 <main class="game-shell">
@@ -76,6 +80,7 @@ app.innerHTML = `
       </div>
       <div class="top-actions">
         <span id="roundMeta" class="pill">Belum dimulai</span>
+        <span id="chapterTimer" class="timer-pill">07:00</span>
         <button id="fullscreenButton" class="icon-btn" type="button" aria-label="Layar penuh">⛶</button>
       </div>
     </header>
@@ -104,10 +109,10 @@ app.innerHTML = `
           ${teamSetupCard(2)}
         </div>
         <div class="round-list">
-          <div><b>1</b><span><strong>Pilihan Ganda</strong><small>10 soal/sisi • ☝️ 1–4 jari = A–D</small></span></div>
-          <div><b>2</b><span><strong>Benar / Salah</strong><small>10 soal/sisi • 👍 / 👎</small></span></div>
-          <div><b>3</b><span><strong>Menjodohkan</strong><small>5 soal/sisi • 🤏 drag & drop</small></span></div>
-          <div><b>4</b><span><strong>Pilihan Lebih dari 1</strong><small>10 soal/sisi • pointer + 🤏 + ✊</small></span></div>
+          <div><b>1</b><span><strong>Pilihan Ganda</strong><small>10 soal/sisi • ☝️ A • ✌️ B • 👍 C • ✋ D • ✊ kunci</small></span></div>
+          <div><b>2</b><span><strong>Benar / Salah</strong><small>10 soal/sisi • 👍 / 👎 pilih • ✊ kunci</small></span></div>
+          <div><b>3</b><span><strong>Menjodohkan</strong><small>5 soal/sisi • 🤏 drag & drop • ✊ kunci</small></span></div>
+          <div><b>4</b><span><strong>Pilihan Lebih dari 1</strong><small>10 soal/sisi • pointer + 🤏 pilih • ✊ kunci</small></span></div>
         </div>
         <div id="setupStatus" class="setup-status">MediaPipe belum dimuat.</div>
         <div class="start-actions">
@@ -126,7 +131,7 @@ app.innerHTML = `
         <h2 id="chapterName">Pilihan Ganda</h2>
         <div id="chapterMatchup" class="chapter-matchup">A1 VS B1</div>
         <p id="chapterInstruction"></p>
-        <p class="chapter-note">Soal Tim A dan Tim B berbeda. Setelah jawaban terkunci, masing-masing sisi otomatis masuk soal berikutnya.</p>
+        <p class="chapter-note">Soal Tim A dan Tim B berbeda. Setiap babak berdurasi 7 menit. Pilihan masih dapat diubah sampai ✊ KUNCI; setelah dikunci, sisi tersebut otomatis masuk soal berikutnya.</p>
         <button id="chapterStartButton" class="button success" type="button">Mulai Babak</button>
       </div>
     </section>
@@ -198,6 +203,7 @@ const chapterOverlay = must<HTMLElement>("#chapterOverlay");
 const finishOverlay = must<HTMLElement>("#finishOverlay");
 const playerArea = must<HTMLElement>("#playerArea");
 const setupStatus = must<HTMLElement>("#setupStatus");
+const chapterTimer = must<HTMLElement>("#chapterTimer");
 const cameraButton = must<HTMLButtonElement>("#cameraButton");
 const startButton = must<HTMLButtonElement>("#startButton");
 const cursorEls: Record<PlayerId, HTMLElement> = { 1: must("#cursor1"), 2: must("#cursor2") };
@@ -251,6 +257,7 @@ must<HTMLButtonElement>("#chapterStartButton").addEventListener("click", () => {
 
 must<HTMLButtonElement>("#againButton").addEventListener("click", startMatch);
 must<HTMLButtonElement>("#homeButton").addEventListener("click", () => {
+  stopChapterTimer();
   finishOverlay.classList.add("hidden");
   playerArea.classList.add("hidden");
   startOverlay.classList.remove("hidden");
@@ -264,6 +271,8 @@ must<HTMLButtonElement>("#fullscreenButton").addEventListener("click", async () 
 });
 
 function startMatch(): void {
+  stopChapterTimer();
+  chapterTimedOut = false;
   for (const id of [1,2] as const) for (const sub of teams[id].subteams) sub.score = 0;
   sequences = buildSequences();
   currentChapter = 1;
@@ -320,6 +329,9 @@ function prepareMulti(q: MultiQuestion): PreparedMulti {
 }
 
 function showChapterIntro(chapter: number): void {
+  stopChapterTimer();
+  chapterTimedOut = false;
+  updateChapterTimerDisplay(CHAPTER_DURATION_MS);
   chapterWaiting = true;
   currentChapter = chapter;
   const info = chapterInfo(chapter);
@@ -334,11 +346,13 @@ function showChapterIntro(chapter: number): void {
 
 function startChapter(): void {
   questionIndex = { 1: 0, 2: 0 };
+  chapterTimedOut = false;
   chapterDone = { 1: false, 2: false };
   chapterTransitionPending = false;
   activateChapter(currentChapter);
   must("#roundMeta").textContent = `BABAK ${currentChapter} • ${teams[1].subteams[currentChapter - 1]!.name} VS ${teams[2].subteams[currentChapter - 1]!.name} • soal berbeda`;
   for (const id of [1,2] as const) renderPlayerQuestion(id);
+  startChapterTimer();
 }
 
 function currentQuestionFor(id: PlayerId): PreparedQuestion | null {
@@ -399,16 +413,18 @@ function renderSingle(id: PlayerId, q: PreparedSingle, mount: HTMLElement): void
   q.options.forEach((text, index) => {
     const btn = document.createElement("button"); btn.type = "button"; btn.className = "choice-option";
     btn.dataset.index = String(index); btn.innerHTML = `<b>${letter(index)}</b><span>${escapeHtml(text)}</span>`;
-    btn.addEventListener("click", () => submitSingle(id, index)); wrap.appendChild(btn);
+    btn.addEventListener("click", () => selectSingle(id, index)); wrap.appendChild(btn);
   });
-  mount.appendChild(wrap);
+  const submit = document.createElement("button"); submit.type = "button"; submit.className = "submit-answer"; submit.dataset.action = "submit-single"; submit.textContent = "✊ Kunci Jawaban"; submit.addEventListener("click", () => lockSingle(id));
+  mount.append(wrap, submit);
 }
 
 function renderBoolean(id: PlayerId, mount: HTMLElement): void {
   const wrap = document.createElement("div"); wrap.className = "boolean-grid";
-  const yes = document.createElement("button"); yes.type = "button"; yes.className = "boolean-option true"; yes.innerHTML = `<b>👍</b><span>BENAR</span>`; yes.addEventListener("click", () => submitBoolean(id, true));
-  const no = document.createElement("button"); no.type = "button"; no.className = "boolean-option false"; no.innerHTML = `<b>👎</b><span>SALAH</span>`; no.addEventListener("click", () => submitBoolean(id, false));
-  wrap.append(yes, no); mount.appendChild(wrap);
+  const yes = document.createElement("button"); yes.type = "button"; yes.className = "boolean-option true"; yes.dataset.value = "true"; yes.innerHTML = `<b>👍</b><span>BENAR</span>`; yes.addEventListener("click", () => selectBoolean(id, true));
+  const no = document.createElement("button"); no.type = "button"; no.className = "boolean-option false"; no.dataset.value = "false"; no.innerHTML = `<b>👎</b><span>SALAH</span>`; no.addEventListener("click", () => selectBoolean(id, false));
+  const submit = document.createElement("button"); submit.type = "button"; submit.className = "submit-answer"; submit.dataset.action = "submit-boolean"; submit.textContent = "✊ Kunci Jawaban"; submit.addEventListener("click", () => lockBoolean(id));
+  wrap.append(yes, no); mount.append(wrap, submit);
 }
 
 function renderMatching(id: PlayerId, q: MatchingQuestion, mount: HTMLElement): void {
@@ -443,15 +459,35 @@ function renderMulti(id: PlayerId, q: PreparedMulti, mount: HTMLElement): void {
   mount.append(wrap, submit);
 }
 
-function submitSingle(id: PlayerId, index: number): void {
+function selectSingle(id: PlayerId, index: number): void {
   const q = currentQuestionFor(id); if (!canSubmit(id) || q?.type !== "single") return;
   players[id].answer = index;
+  const mount = must<HTMLElement>(`#answerMount${id}`);
+  mount.querySelectorAll<HTMLElement>(".choice-option").forEach(el => el.classList.toggle("selected", Number(el.dataset.index) === index));
+  setLockState(id, `PILIHAN ${letter(index)} • BELUM DIKUNCI`, false);
+  setGestureMessage(id, `${letter(index)} dipilih • ✊ untuk KUNCI`, 0);
+}
+
+function lockSingle(id: PlayerId): void {
+  const q = currentQuestionFor(id); if (!canSubmit(id) || q?.type !== "single") return;
+  if (typeof players[id].answer !== "number") { setGestureMessage(id, "Pilih A/B/C/D terlebih dahulu", 0); return; }
+  const index = players[id].answer as number;
   finalizePlayerSubmission(id, index === q.correct);
 }
 
-function submitBoolean(id: PlayerId, value: boolean): void {
+function selectBoolean(id: PlayerId, value: boolean): void {
   const q = currentQuestionFor(id); if (!canSubmit(id) || q?.type !== "boolean") return;
   players[id].answer = value;
+  const mount = must<HTMLElement>(`#answerMount${id}`);
+  mount.querySelectorAll<HTMLElement>(".boolean-option").forEach(el => el.classList.toggle("selected", el.dataset.value === String(value)));
+  setLockState(id, `${value ? "BENAR" : "SALAH"} • BELUM DIKUNCI`, false);
+  setGestureMessage(id, `${value ? "BENAR" : "SALAH"} dipilih • ✊ untuk KUNCI`, 0);
+}
+
+function lockBoolean(id: PlayerId): void {
+  const q = currentQuestionFor(id); if (!canSubmit(id) || q?.type !== "boolean") return;
+  if (typeof players[id].answer !== "boolean") { setGestureMessage(id, "Pilih 👍 BENAR atau 👎 SALAH terlebih dahulu", 0); return; }
+  const value = players[id].answer as boolean;
   finalizePlayerSubmission(id, value === q.correct);
 }
 
@@ -496,8 +532,8 @@ function assignMatch(id: PlayerId, leftId: string, rightId: string): void {
   map[leftId] = rightId;
   refreshMatchingUI(id);
   if (Object.keys(map).length === q.pairs.length && canSubmit(id)) {
-    setGestureMessage(id, "Semua pasangan terisi • mengunci…", 100);
-    window.setTimeout(() => submitMatching(id), 260);
+    setGestureMessage(id, "Semua pasangan terisi • ✊ untuk KUNCI", 0);
+    setLockState(id, "SIAP DIKUNCI", false);
   }
 }
 
@@ -557,6 +593,7 @@ function markChapterDone(id: PlayerId): void {
   chapterDone[id] = true;
   renderWaiting(id);
   if (chapterDone[1] && chapterDone[2] && !chapterTransitionPending) {
+    stopChapterTimer();
     chapterTransitionPending = true;
     window.setTimeout(() => {
       if (currentChapter >= 4) finishMatch();
@@ -569,9 +606,9 @@ function renderWaiting(id: PlayerId): void {
   const total = sequences[id][currentChapter - 1]!.length;
   must(`#playerQuestionCounter${id}`).textContent = `${total}/${total}`;
   must(`#sideChapter${id}`).textContent = `BABAK ${currentChapter} SELESAI`;
-  must(`#sideTitle${id}`).textContent = "Menunggu lawan";
-  must(`#sideStimulus${id}`).textContent = "Semua soal untuk sub-tim ini sudah selesai. Skor telah disimpan.";
-  must(`#sidePrompt${id}`).textContent = chapterDone[id === 1 ? 2 : 1] ? "Bersiap menuju babak berikutnya…" : "Tunggu sub-tim lawan menyelesaikan soal mereka.";
+  must(`#sideTitle${id}`).textContent = chapterTimedOut ? "Waktu Habis" : "Menunggu lawan";
+  must(`#sideStimulus${id}`).textContent = chapterTimedOut ? "Waktu 7 menit untuk babak ini telah habis. Skor jawaban yang sudah dikunci tetap disimpan." : "Semua soal untuk sub-tim ini sudah selesai. Skor telah disimpan.";
+  must(`#sidePrompt${id}`).textContent = chapterTimedOut ? "Bersiap menuju babak berikutnya…" : (chapterDone[id === 1 ? 2 : 1] ? "Bersiap menuju babak berikutnya…" : "Tunggu sub-tim lawan menyelesaikan soal mereka.");
   must(`#sideGestureHint${id}`).textContent = "Tidak perlu melakukan gesture.";
   must<HTMLElement>(`#questionCard${id}`).classList.add("waiting-card");
   must<HTMLElement>(`#answerMount${id}`).replaceChildren();
@@ -581,6 +618,7 @@ function renderWaiting(id: PlayerId): void {
 }
 
 function finishMatch(): void {
+  stopChapterTimer();
   chapterWaiting = true;
   playerArea.classList.add("hidden");
   const total1 = teamTotal(1), total2 = teamTotal(2);
@@ -659,36 +697,50 @@ function handleFrames(frames: Map<PlayerId, HandFrame>): void {
 
 function handleGesture(id: PlayerId, frame: HandFrame, now: number): void {
   const q = currentQuestionFor(id); if (!q || now < gestureCooldownUntil[id]) return;
+  const fist = isClosedFist(frame.landmarks);
+
   if (q.type === "single") {
-    const count = countExtendedFingers(frame.landmarks);
-    const key = count >= 1 && count <= 4 ? String(count) : "";
-    handleHeldGesture(id, key, now, key ? `${key} jari → ${letter(count - 1)}` : "Tunjukkan 1–4 jari", () => submitSingle(id, count - 1));
+    if (fist) {
+      handleHeldGesture(id, "lock-single", now, "✊ tahan untuk KUNCI", () => lockSingle(id), APP_CONFIG.lockHoldMs);
+      return;
+    }
+    const choice = classifySingleChoiceGesture(frame.landmarks);
+    handleHeldGesture(id, choice ? `single-${choice.index}` : "", now, choice ? `${choice.emoji} → ${letter(choice.index)} (belum dikunci)` : "☝️ A • ✌️ B • 👍 C • ✋ D", () => selectSingle(id, choice!.index));
     return;
   }
+
   if (q.type === "boolean") {
+    if (fist) {
+      handleHeldGesture(id, "lock-boolean", now, "✊ tahan untuk KUNCI", () => lockBoolean(id), APP_CONFIG.lockHoldMs);
+      return;
+    }
     const dir = thumbDirection(frame.landmarks); const key = dir === 1 ? "true" : dir === -1 ? "false" : "";
-    handleHeldGesture(id, key, now, dir === 1 ? "👍 BENAR" : dir === -1 ? "👎 SALAH" : "Tunjukkan 👍 / 👎", () => submitBoolean(id, dir === 1));
+    handleHeldGesture(id, key, now, dir === 1 ? "👍 BENAR (belum dikunci)" : dir === -1 ? "👎 SALAH (belum dikunci)" : "👍 BENAR • 👎 SALAH • ✊ KUNCI", () => selectBoolean(id, dir === 1));
     return;
   }
+
   if (q.type === "matching") {
     if (frame.pinch && !previousPinch[id]) startGestureDrag(id, frame.cursor.x, frame.cursor.y);
     if (frame.pinch && gestureDrag[id]) moveGestureDrag(id, frame.cursor.x, frame.cursor.y);
     if (!frame.pinch && previousPinch[id] && gestureDrag[id]) endGestureDrag(id, frame.cursor.x, frame.cursor.y);
     else if (frame.pinch && !previousPinch[id] && !gestureDrag[id]) triggerPinchTarget(id, frame.cursor.x, frame.cursor.y);
+    if (!frame.pinch && !gestureDrag[id]) {
+      handleHeldGesture(id, fist ? "lock-match" : "", now, fist ? "✊ tahan untuk KUNCI" : "🤏 susun pasangan • ✊ kunci", () => submitMatching(id), APP_CONFIG.lockHoldMs);
+    }
     return;
   }
+
   if (q.type === "multi") {
     if (frame.pinch && !previousPinch[id]) triggerPinchTarget(id, frame.cursor.x, frame.cursor.y);
-    const fist = countExtendedFingers(frame.landmarks) === 0;
-    handleHeldGesture(id, fist ? "fist" : "", now, fist ? "✊ tahan untuk KUNCI" : "🤏 pilih • ✊ kunci", () => submitMulti(id));
+    handleHeldGesture(id, fist ? "lock-multi" : "", now, fist ? "✊ tahan untuk KUNCI" : "🤏 pilih/batalkan • ✊ kunci", () => submitMulti(id), APP_CONFIG.lockHoldMs);
   }
 }
 
-function handleHeldGesture(id: PlayerId, key: string, now: number, label: string, fire: () => void): void {
+function handleHeldGesture(id: PlayerId, key: string, now: number, label: string, fire: () => void, durationMs: number = APP_CONFIG.gestureHoldMs): void {
   const hold = gestureHold[id];
   if (!key) { resetGestureHold(id); setGestureMessage(id, label, 0); return; }
   if (hold.key !== key) { hold.key = key; hold.since = now; hold.fired = false; }
-  const progress = Math.min(1, (now - hold.since) / APP_CONFIG.gestureHoldMs);
+  const progress = Math.min(1, (now - hold.since) / durationMs);
   setGestureMessage(id, label, progress * 100);
   if (progress >= 1 && !hold.fired) {
     hold.fired = true; gestureCooldownUntil[id] = now + APP_CONFIG.gestureCooldownMs; fire();
@@ -704,6 +756,8 @@ function triggerPinchTarget(id: PlayerId, x: number, y: number): void {
   const q = currentQuestionFor(id); if (!q) return;
   const target = document.elementFromPoint(x, y) as HTMLElement | null; if (!target) return;
   if (!target.closest<HTMLElement>(`.player-panel[data-player="${id}"]`)) return;
+  if (q.type === "single" && target.closest<HTMLElement>("[data-action='submit-single']")) lockSingle(id);
+  if (q.type === "boolean" && target.closest<HTMLElement>("[data-action='submit-boolean']")) lockBoolean(id);
   if (q.type === "multi") {
     const option = target.closest<HTMLElement>(".multi-option"); if (option) toggleMulti(id, Number(option.dataset.index));
     if (target.closest<HTMLElement>("[data-action='submit-multi']")) submitMulti(id);
@@ -735,6 +789,39 @@ function cancelGestureDrag(id: PlayerId): void {
   must<HTMLElement>(`#answerMount${id}`).querySelectorAll(".match-card.dragging").forEach(el => el.classList.remove("dragging"));
 }
 
+interface SingleGestureChoice { index: number; emoji: string; }
+
+function classifySingleChoiceGesture(points: {x:number;y:number}[]): SingleGestureChoice | null {
+  const f = fingerFlags(points);
+  const thumb = thumbDirection(points);
+  if (f.index && !f.middle && !f.ring && !f.pinky) return { index: 0, emoji: "☝️" };
+  if (f.index && f.middle && !f.ring && !f.pinky) return { index: 1, emoji: "✌️" };
+  if (!f.index && !f.middle && !f.ring && !f.pinky && thumb === 1) return { index: 2, emoji: "👍" };
+  if (f.index && f.middle && f.ring && f.pinky) return { index: 3, emoji: "✋" };
+  return null;
+}
+
+function fingerFlags(points: {x:number;y:number}[]): {index:boolean;middle:boolean;ring:boolean;pinky:boolean} {
+  const extended = (mcp:number, pip:number, tip:number): boolean => {
+    const a = points[mcp], b = points[pip], c = points[tip], wrist = points[0];
+    if (!a || !b || !c || !wrist) return false;
+    const straight = angleDeg(a,b,c) > 150;
+    const farther = distance(wrist,c) > distance(wrist,b) * 1.10;
+    return straight && farther;
+  };
+  return {
+    index: extended(5,6,8),
+    middle: extended(9,10,12),
+    ring: extended(13,14,16),
+    pinky: extended(17,18,20)
+  };
+}
+
+function isClosedFist(points: {x:number;y:number}[]): boolean {
+  const f = fingerFlags(points);
+  return !f.index && !f.middle && !f.ring && !f.pinky && thumbDirection(points) === 0;
+}
+
 function countExtendedFingers(points: {x:number;y:number}[]): number {
   const fingers = [[5,6,8],[9,10,12],[13,14,16],[17,18,20]] as const;
   let count = 0;
@@ -759,16 +846,56 @@ function angleDeg(a:{x:number;y:number}, b:{x:number;y:number}, c:{x:number;y:nu
 }
 function distance(a:{x:number;y:number}, b:{x:number;y:number}): number { return Math.hypot(a.x-b.x,a.y-b.y); }
 
+
+function startChapterTimer(): void {
+  stopChapterTimer();
+  chapterEndsAt = Date.now() + CHAPTER_DURATION_MS;
+  updateChapterTimer();
+  chapterTimerId = window.setInterval(updateChapterTimer, 250);
+}
+
+function stopChapterTimer(): void {
+  if (chapterTimerId !== null) {
+    window.clearInterval(chapterTimerId);
+    chapterTimerId = null;
+  }
+}
+
+function updateChapterTimer(): void {
+  const remaining = Math.max(0, chapterEndsAt - Date.now());
+  updateChapterTimerDisplay(remaining);
+  if (remaining <= 0) handleChapterTimeout();
+}
+
+function updateChapterTimerDisplay(remainingMs: number): void {
+  const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  chapterTimer.textContent = `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+  chapterTimer.classList.toggle("warning", totalSeconds <= 60 && totalSeconds > 0);
+  chapterTimer.classList.toggle("expired", totalSeconds === 0);
+}
+
+function handleChapterTimeout(): void {
+  if (chapterTimedOut || chapterWaiting || (chapterDone[1] && chapterDone[2])) return;
+  chapterTimedOut = true;
+  stopChapterTimer();
+  for (const id of [1,2] as const) {
+    if (gestureDrag[id]) cancelGestureDrag(id);
+    if (!chapterDone[id]) markChapterDone(id);
+  }
+}
+
 function chapterInfo(chapter: number): {name:string;emoji:string;instruction:string} {
-  if (chapter === 1) return { name:"Pilihan Ganda", emoji:"☝️", instruction:"Setiap sisi mendapat soal berbeda. Tunjukkan 1 jari untuk A, 2 untuk B, 3 untuk C, atau 4 untuk D. Jawaban terkunci lalu otomatis lanjut." };
-  if (chapter === 2) return { name:"Benar / Salah", emoji:"👍", instruction:"Setiap sisi mendapat pernyataan berbeda. Gunakan thumbs up untuk BENAR dan thumbs down untuk SALAH. Setelah terkunci, otomatis lanjut." };
-  if (chapter === 3) return { name:"Menjodohkan", emoji:"🤏", instruction:"Pinch kartu, geser ke pasangan, lalu lepas. Ketika semua pasangan terisi, jawaban otomatis dikunci dan lanjut ke soal berikutnya." };
-  return { name:"Pilihan Lebih dari 1", emoji:"✊", instruction:"Gunakan telunjuk sebagai pointer dan pinch untuk memilih beberapa opsi. Kepalkan tangan untuk mengunci. Setelah itu otomatis lanjut." };
+  if (chapter === 1) return { name:"Pilihan Ganda", emoji:"☝️", instruction:"Waktu 7 menit. Gunakan ☝️ untuk A, ✌️ untuk B, 👍 untuk C, dan ✋ untuk D. Pilihan dapat diganti. Tahan ✊ untuk mengunci; setelah terkunci otomatis lanjut." };
+  if (chapter === 2) return { name:"Benar / Salah", emoji:"👍", instruction:"Waktu 7 menit. Gunakan 👍 untuk BENAR atau 👎 untuk SALAH. Pilihan dapat diganti sampai Anda menahan ✊ untuk mengunci." };
+  if (chapter === 3) return { name:"Menjodohkan", emoji:"🤏", instruction:"Waktu 7 menit. Pinch kartu, geser ke pasangan, lalu lepas. Pasangan masih dapat diubah. Setelah yakin, tahan ✊ untuk mengunci dan lanjut." };
+  return { name:"Pilihan Lebih dari 1", emoji:"✊", instruction:"Waktu 7 menit. Gunakan telunjuk sebagai pointer dan pinch untuk memilih atau membatalkan beberapa opsi. Tahan ✊ untuk mengunci dan lanjut." };
 }
 function gestureHint(type: PreparedQuestion["type"]): string {
-  if (type === "single") return `<b>GESTURE:</b> ☝️ A &nbsp; ✌️ B &nbsp; 3 jari = C &nbsp; 4 jari = D`;
-  if (type === "boolean") return `<b>GESTURE:</b> 👍 BENAR &nbsp; • &nbsp; 👎 SALAH`;
-  if (type === "matching") return `<b>GESTURE:</b> ☝️ arahkan → 🤏 ambil → geser → 🖐️ lepas`;
+  if (type === "single") return `<b>GESTURE:</b> ☝️ A &nbsp; ✌️ B &nbsp; 👍 C &nbsp; ✋ D &nbsp; • &nbsp; ✊ KUNCI`;
+  if (type === "boolean") return `<b>GESTURE:</b> 👍 BENAR &nbsp; • &nbsp; 👎 SALAH &nbsp; • &nbsp; ✊ KUNCI`;
+  if (type === "matching") return `<b>GESTURE:</b> ☝️ arahkan → 🤏 ambil → geser → 🖐️ lepas &nbsp; • &nbsp; ✊ KUNCI`;
   return `<b>GESTURE:</b> ☝️ pointer + 🤏 pilih &nbsp; • &nbsp; ✊ kunci`;
 }
 

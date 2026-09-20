@@ -254,3 +254,15 @@ button { -webkit-tap-highlight-color: transparent; }
   .player-panel:first-child { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.16); }
   .center-line { display: none; }
 }
+
+
+/* v1.3 — confirm-before-lock gestures + 7 minute chapter timer */
+.timer-pill { min-width: 70px; padding: 7px 10px; border-radius: 999px; color: #dcfce7; background: rgba(22,101,52,.62); border: 1px solid rgba(134,239,172,.35); font-weight: 950; font-variant-numeric: tabular-nums; text-align: center; letter-spacing: .05em; }
+.timer-pill.warning { color: #fef3c7; background: rgba(146,64,14,.72); border-color: rgba(251,191,36,.55); animation: timerPulse 1s ease-in-out infinite; }
+.timer-pill.expired { color: #fee2e2; background: rgba(153,27,27,.76); border-color: rgba(248,113,113,.55); }
+@keyframes timerPulse { 50% { transform: scale(1.05); } }
+.choice-option.selected { outline: 3px solid rgba(103,232,249,.90); background: rgba(8,145,178,.48); transform: translateY(-1px); }
+.player-2 .choice-option.selected { outline-color: rgba(244,114,182,.92); background: rgba(190,24,93,.44); }
+.boolean-option.selected { outline: 3px solid rgba(250,204,21,.92); background: rgba(113,63,18,.50); transform: translateY(-1px); }
+.submit-answer { margin-top: 9px; }
+@media (max-width: 560px) { .timer-pill { min-width: 60px; padding-inline: 7px; font-size: .76rem; } }

@@ -1,4 +1,4 @@
-# Profesi Kependidikan Versus v1.2
+# Profesi Kependidikan Versus v1.3
 
 Website statis berbasis Vite + TypeScript + MediaPipe Hand Landmarker untuk permainan kelas **2 tim besar × 4 sub-tim**.
 
@@ -9,7 +9,7 @@ Website statis berbasis Vite + TypeScript + MediaPipe Hand Landmarker untuk perm
 - Babak 3: A3 vs B3 — 5 Menjodohkan
 - Babak 4: A4 vs B4 — 10 Pilihan Lebih dari 1
 
-## Perubahan v1.2
+## Perubahan v1.3
 
 - Kamera tampil penuh/transparan sehingga pemain dan tangan tetap terlihat.
 - Tim A dan Tim B mendapat **soal berbeda** pada saat bermain.
@@ -41,3 +41,11 @@ npm run check
 ```
 
 > Akses kamera memerlukan HTTPS atau localhost pada browser modern. Video diproses di browser.
+
+
+## Perubahan v1.3
+- Pilihan ganda memakai gesture yang lebih berbeda: **☝️ A, ✌️ B, 👍 C, ✋ D**.
+- **✊ Closed Fist = KUNCI**. Pilihan PG dan Benar/Salah dapat diubah berkali-kali sebelum dikunci.
+- Setelah jawaban dikunci, pemain otomatis masuk ke soal berikutnya.
+- Menjodohkan tidak lagi otomatis submit ketika semua pasangan terisi; pemain dapat mengubah pasangan lalu ✊ mengunci.
+- Setiap babak memiliki **timer bersama 7 menit**. Saat 00:00, babak berakhir dan hanya skor jawaban yang sudah dikunci yang disimpan.
