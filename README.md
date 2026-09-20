@@ -1,22 +1,31 @@
-# Profesi Kependidikan Versus
+# Profesi Kependidikan Versus v1.2
 
-Website statis **2 tim besar × 4 sub-tim** berbasis MediaPipe Hand Landmarker untuk materi **Profesionalisme, Etika, dan Ekosistem Tenaga Kependidikan**.
+Website statis berbasis Vite + TypeScript + MediaPipe Hand Landmarker untuk permainan kelas **2 tim besar × 4 sub-tim**.
 
-## Format tim
+## Format pertandingan
 
-- **Tim A** memiliki sub-tim A1, A2, A3, A4.
-- **Tim B** memiliki sub-tim B1, B2, B3, B4.
-- Nama tim besar dan seluruh sub-tim dapat diganti pada layar awal.
-- Skor sub-tim otomatis dijumlahkan menjadi skor total tim besar.
+- Babak 1: A1 vs B1 — 10 Pilihan Ganda
+- Babak 2: A2 vs B2 — 10 Benar/Salah
+- Babak 3: A3 vs B3 — 5 Menjodohkan
+- Babak 4: A4 vs B4 — 10 Pilihan Lebih dari 1
 
-## Babak dan pasangan aktif
+## Perubahan v1.2
 
-1. **A1 vs B1** — Pilihan Ganda — 10 soal — gesture 1–4 jari untuk A–D.
-2. **A2 vs B2** — Benar/Salah — 10 soal — thumbs up / thumbs down.
-3. **A3 vs B3** — Menjodohkan — 5 soal — pointer + pinch drag & drop.
-4. **A4 vs B4** — Pilihan Lebih dari 1 — 10 soal — pointer + pinch, kepalan untuk submit.
+- Kamera tampil penuh/transparan sehingga pemain dan tangan tetap terlihat.
+- Tim A dan Tim B mendapat **soal berbeda** pada saat bermain.
+- Kedua sisi berjalan mandiri; tidak perlu menunggu lawan untuk berpindah soal.
+- Setelah jawaban terkunci, soal berikutnya tampil otomatis.
+- Tidak ada pembahasan/kunci jawaban yang ditampilkan selama mode VS.
+- Jika satu sub-tim selesai lebih cepat, sisi tersebut menunggu sampai lawan menyelesaikan babak.
+- Menjodohkan otomatis mengunci setelah semua pasangan terisi.
+- Bank soal tetap 35 butir: 10 PG + 10 B/S + 5 matching + 10 multi-select.
 
-Pada setiap ronde, kedua sub-tim aktif menerima **soal dan urutan opsi yang sama**. Urutan soal diacak ulang ketika pertandingan dimulai. Setelah babak berakhir, pemain di depan kamera berganti ke pasangan sub-tim berikutnya.
+## Gesture
+
+- Pilihan Ganda: 1 jari=A, 2=B, 3=C, 4=D.
+- Benar/Salah: 👍 Benar, 👎 Salah.
+- Menjodohkan: telunjuk sebagai pointer, pinch untuk mengambil, gerakkan, lalu lepas.
+- Multi-select: pointer + pinch untuk memilih; kepalan tangan untuk mengunci.
 
 ## Menjalankan lokal
 
@@ -25,18 +34,10 @@ npm install
 npm run dev
 ```
 
-Buka alamat localhost yang diberikan Vite. Kamera hanya dapat digunakan pada `localhost` atau situs HTTPS.
-
-## Build
+## Pemeriksaan
 
 ```bash
-npm run build
+npm run check
 ```
 
-Hasil build berada di folder `dist/` dan dapat di-deploy sebagai website statis ke Vercel/Netlify.
-
-## Catatan
-
-- Video kamera diproses di browser.
-- Mouse/touch mode tersedia untuk pengujian tanpa kamera.
-- Bank soal berada di `src/data/questions.json`.
+> Akses kamera memerlukan HTTPS atau localhost pada browser modern. Video diproses di browser.
