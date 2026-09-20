@@ -109,7 +109,7 @@ app.innerHTML = `
           ${teamSetupCard(2)}
         </div>
         <div class="round-list">
-          <div><b>1</b><span><strong>Pilihan Ganda</strong><small>10 soal/sisi • ☝️ A • ✌️ B • 👍 C • ✋ D • ✊ kunci</small></span></div>
+          <div><b>1</b><span><strong>Pilihan Ganda</strong><small>10 soal/sisi • ☝️ A • ✌️ B • 🤟 C • ✋ D • ✊ kunci</small></span></div>
           <div><b>2</b><span><strong>Benar / Salah</strong><small>10 soal/sisi • 👍 / 👎 pilih • ✊ kunci</small></span></div>
           <div><b>3</b><span><strong>Menjodohkan</strong><small>5 soal/sisi • 🤏 drag & drop • ✊ kunci</small></span></div>
           <div><b>4</b><span><strong>Pilihan Lebih dari 1</strong><small>10 soal/sisi • pointer + 🤏 pilih • ✊ kunci</small></span></div>
@@ -705,7 +705,7 @@ function handleGesture(id: PlayerId, frame: HandFrame, now: number): void {
       return;
     }
     const choice = classifySingleChoiceGesture(frame.landmarks);
-    handleHeldGesture(id, choice ? `single-${choice.index}` : "", now, choice ? `${choice.emoji} → ${letter(choice.index)} (belum dikunci)` : "☝️ A • ✌️ B • 👍 C • ✋ D", () => selectSingle(id, choice!.index));
+    handleHeldGesture(id, choice ? `single-${choice.index}` : "", now, choice ? `${choice.emoji} → ${letter(choice.index)} (belum dikunci)` : "☝️ A • ✌️ B • 🤟 C • ✋ D", () => selectSingle(id, choice!.index));
     return;
   }
 
@@ -796,7 +796,7 @@ function classifySingleChoiceGesture(points: {x:number;y:number}[]): SingleGestu
   const thumb = thumbDirection(points);
   if (f.index && !f.middle && !f.ring && !f.pinky) return { index: 0, emoji: "☝️" };
   if (f.index && f.middle && !f.ring && !f.pinky) return { index: 1, emoji: "✌️" };
-  if (!f.index && !f.middle && !f.ring && !f.pinky && thumb === 1) return { index: 2, emoji: "👍" };
+  if (f.index && !f.middle && !f.ring && f.pinky && isThumbExtendedForILoveYou(points)) return { index: 2, emoji: "🤟" };
   if (f.index && f.middle && f.ring && f.pinky) return { index: 3, emoji: "✋" };
   return null;
 }
@@ -815,6 +815,21 @@ function fingerFlags(points: {x:number;y:number}[]): {index:boolean;middle:boole
     ring: extended(13,14,16),
     pinky: extended(17,18,20)
   };
+}
+
+function isThumbExtendedForILoveYou(points: {x:number;y:number}[]): boolean {
+  const wrist = points[0], thumbMcp = points[2], thumbIp = points[3], thumbTip = points[4];
+  const indexMcp = points[5], pinkyMcp = points[17];
+  if (!wrist || !thumbMcp || !thumbIp || !thumbTip || !indexMcp || !pinkyMcp) return false;
+
+  // ILY: ibu jari harus benar-benar keluar dari telapak, tetapi boleh miring
+  // ke samping/atas sehingga tidak bergantung pada tangan kiri/kanan.
+  const palmWidth = Math.max(24, distance(indexMcp, pinkyMcp));
+  const thumbReach = distance(thumbTip, thumbMcp);
+  const thumbFromPalm = Math.min(distance(thumbTip, indexMcp), distance(thumbTip, pinkyMcp));
+  const thumbStraight = angleDeg(thumbMcp, thumbIp, thumbTip) > 135;
+
+  return thumbStraight && thumbReach > palmWidth * 0.42 && thumbFromPalm > palmWidth * 0.33;
 }
 
 function isClosedFist(points: {x:number;y:number}[]): boolean {
@@ -893,7 +908,7 @@ function chapterInfo(chapter: number): {name:string;emoji:string;instruction:str
   return { name:"Pilihan Lebih dari 1", emoji:"✊", instruction:"Waktu 7 menit. Gunakan telunjuk sebagai pointer dan pinch untuk memilih atau membatalkan beberapa opsi. Tahan ✊ untuk mengunci dan lanjut." };
 }
 function gestureHint(type: PreparedQuestion["type"]): string {
-  if (type === "single") return `<b>GESTURE:</b> ☝️ A &nbsp; ✌️ B &nbsp; 👍 C &nbsp; ✋ D &nbsp; • &nbsp; ✊ KUNCI`;
+  if (type === "single") return `<b>GESTURE:</b> ☝️ A &nbsp; ✌️ B &nbsp; 🤟 C &nbsp; ✋ D &nbsp; • &nbsp; ✊ KUNCI`;
   if (type === "boolean") return `<b>GESTURE:</b> 👍 BENAR &nbsp; • &nbsp; 👎 SALAH &nbsp; • &nbsp; ✊ KUNCI`;
   if (type === "matching") return `<b>GESTURE:</b> ☝️ arahkan → 🤏 ambil → geser → 🖐️ lepas &nbsp; • &nbsp; ✊ KUNCI`;
   return `<b>GESTURE:</b> ☝️ pointer + 🤏 pilih &nbsp; • &nbsp; ✊ kunci`;

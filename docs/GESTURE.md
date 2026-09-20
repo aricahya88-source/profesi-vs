@@ -1,27 +1,29 @@
 # Peta Gesture
 
 ## Babak 1 — Pilihan Ganda
-- 1 jari: A
-- 2 jari: B
-- 3 jari: C
-- 4 jari: D
-- Gesture harus stabil sekitar 560 ms.
+- ☝️ `Pointing Up`: A
+- ✌️ `Victory`: B
+- 🤟 `ILoveYou`: C
+- ✋ `Open Palm`: D
+- ✊ `Closed Fist`: KUNCI jawaban
+- A/B/C/D hanya memilih. Pilihan masih boleh diubah sebelum dikunci.
+- Gesture pilihan harus stabil sekitar 480 ms; gesture kunci sekitar 720 ms.
 
 ## Babak 2 — Benar/Salah
-- Thumbs up: Benar
-- Thumbs down: Salah
+- 👍 Thumbs up: Benar
+- 👎 Thumbs down: Salah
+- ✊ Closed fist: KUNCI
 
 ## Babak 3 — Menjodohkan
 - Telunjuk: pointer
 - Pinch: ambil kartu
 - Gerakkan tangan: drag
 - Buka pinch: drop
-- Tombol Kunci Jawaban dapat dipinch.
+- ✊ Closed fist: KUNCI setelah semua pasangan terisi
 
 ## Babak 4 — Pilihan lebih dari satu
 - Telunjuk: pointer
 - Pinch: pilih/batalkan opsi
-- Kepalan tangan: tahan untuk mengunci jawaban
-- Tombol Kunci Jawaban juga tersedia sebagai fallback.
+- ✊ Closed fist: KUNCI jawaban
 
 Mouse/touch tetap tersedia untuk pengujian tanpa kamera.
