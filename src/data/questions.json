@@ -1,0 +1,240 @@
+[
+  {
+    "id":"pg-01","type":"single","chapter":1,"title":"Karakteristik Profesi",
+    "stimulus":"Di sebuah sekolah terdapat beberapa jenis pekerjaan yang dilakukan secara rutin. Salah seorang pegawai memiliki keahlian khusus yang diperoleh melalui pendidikan dan pelatihan tertentu. Ia harus mengikuti standar kerja, mempertanggungjawabkan keputusan yang dibuat, dan terus meningkatkan kompetensinya. Masyarakat juga mempunyai harapan tertentu terhadap kualitas layanan yang diberikannya. Kondisi tersebut membedakan profesi dari sekadar aktivitas kerja biasa.",
+    "prompt":"Unsur yang paling menunjukkan bahwa pekerjaan tersebut merupakan profesi adalah ...",
+    "options":["Dilakukan setiap hari","Membutuhkan keahlian khusus dan tanggung jawab profesional","Memperoleh penghasilan tetap","Dilaksanakan di sebuah organisasi"],"correct":1,
+    "explanation":"Profesi tidak sekadar pekerjaan rutin atau sumber penghasilan. Profesi menuntut kompetensi khusus, standar tertentu, tanggung jawab profesional, dan pengembangan kompetensi berkelanjutan."
+  },
+  {
+    "id":"pg-02","type":"single","chapter":1,"title":"Profesi dan Pekerjaan",
+    "stimulus":"Rina mengatakan bahwa setiap pekerjaan otomatis dapat disebut profesi karena sama-sama menghasilkan pendapatan. Budi tidak setuju karena menurutnya profesi mempunyai persyaratan tertentu yang tidak selalu dimiliki setiap pekerjaan. Dosen kemudian meminta mahasiswa membandingkan pekerjaan umum dengan profesi. Mahasiswa menemukan adanya unsur kompetensi, standar pelayanan, tanggung jawab, serta pedoman perilaku dalam profesi. Mereka kemudian diminta menarik kesimpulan dari perbandingan tersebut.",
+    "prompt":"Kesimpulan yang paling tepat adalah ...",
+    "options":["Semua pekerjaan adalah profesi","Profesi tidak berkaitan dengan pekerjaan","Profesi merupakan pekerjaan yang menuntut kompetensi dan standar profesional tertentu","Pekerjaan dengan pendapatan tinggi pasti merupakan profesi"],"correct":2,
+    "explanation":"Profesi merupakan pekerjaan dengan tuntutan kompetensi, standar, tanggung jawab, dan norma etik tertentu; pendapatan bukan penentu utamanya."
+  },
+  {
+    "id":"pg-03","type":"single","chapter":1,"title":"Profesionalisme Guru",
+    "stimulus":"Seorang guru telah mengajar mata pelajaran yang sama selama sepuluh tahun. Meskipun berpengalaman, ia terus mengikuti pelatihan, membaca perkembangan terbaru bidang ilmunya, dan mengevaluasi metode pembelajaran yang digunakan. Ketika menemukan kekurangan dalam proses pembelajaran, ia melakukan perbaikan. Ia juga berbagi hasil refleksinya dengan rekan sejawat. Ia tidak menganggap pengalaman panjang membuatnya berhenti belajar.",
+    "prompt":"Perilaku tersebut paling mencerminkan ...",
+    "options":["Senioritas","Profesionalisme","Administrasi","Loyalitas pribadi"],"correct":1,
+    "explanation":"Profesionalisme tampak pada komitmen menjalankan pekerjaan berdasarkan kompetensi, standar, tanggung jawab, refleksi, dan pengembangan diri berkelanjutan."
+  },
+  {
+    "id":"pg-04","type":"single","chapter":1,"title":"Tanggung Jawab Profesional",
+    "stimulus":"Seorang guru menemukan bahwa metode pembelajaran yang digunakan kurang efektif bagi sebagian besar siswa. Ia sebenarnya dapat terus menggunakan metode lama karena lebih mudah dan sudah dikuasainya. Namun, guru tersebut mengumpulkan informasi mengenai kesulitan siswa dan mencoba strategi pembelajaran alternatif. Setelah itu ia mengevaluasi hasilnya dan mendiskusikannya dengan rekan guru. Keputusan diambil berdasarkan kebutuhan belajar, bukan kenyamanan pribadi.",
+    "prompt":"Tindakan yang paling menunjukkan tanggung jawab profesional adalah ...",
+    "options":["Mempertahankan metode lama karena sudah biasa","Menyerahkan seluruh masalah kepada siswa","Menyesuaikan praktik berdasarkan kebutuhan dan hasil evaluasi","Mengganti metode hanya karena sedang populer"],"correct":2,
+    "explanation":"Tanggung jawab profesional menuntut keputusan berbasis kebutuhan layanan, evaluasi, dan peningkatan kualitas, bukan sekadar kebiasaan atau tren."
+  },
+  {
+    "id":"pg-05","type":"single","chapter":1,"title":"Fungsi Kode Etik",
+    "stimulus":"Dalam rapat sekolah terjadi perdebatan mengenai fungsi kode etik. Sebagian guru menganggap kode etik hanya digunakan ketika seseorang melakukan pelanggaran. Guru lain mengatakan bahwa kode etik juga menjadi pedoman dalam mengambil keputusan sehari-hari. Kepala sekolah mengingatkan bahwa perilaku anggota profesi memengaruhi kepercayaan masyarakat. Karena itu kode etik dipandang sebagai salah satu instrumen untuk menjaga kualitas dan martabat profesi.",
+    "prompt":"Pernyataan yang paling tepat adalah ...",
+    "options":["Kode etik hanya diperlukan ketika terjadi pelanggaran","Kode etik hanya mengatur hubungan dengan pimpinan","Kode etik menjadi pedoman perilaku dan tanggung jawab profesional","Kode etik sama dengan aturan teknis pekerjaan"],"correct":2,
+    "explanation":"Kode etik bukan hanya alat penindakan. Ia memberi pedoman perilaku, menjaga integritas, dan membantu profesional mengambil keputusan yang bertanggung jawab."
+  },
+  {
+    "id":"pg-06","type":"single","chapter":1,"title":"Dilema Profesi",
+    "stimulus":"Seorang guru mengetahui informasi pribadi seorang siswa yang diperoleh dalam proses pendampingan. Temannya yang tidak berkepentingan meminta guru tersebut menceritakan masalah siswa karena merasa penasaran. Guru menyadari informasi itu dapat memengaruhi martabat siswa jika tersebar. Tidak ada alasan profesional yang mengharuskannya membagikan informasi tersebut. Guru harus memilih antara memenuhi rasa ingin tahu rekannya atau menjaga hubungan profesional dengan siswa.",
+    "prompt":"Tindakan paling tepat adalah ...",
+    "options":["Menceritakan sebagian informasi saja","Menjaga kerahasiaan informasi sesuai kepentingan profesional","Mengunggah kasus dalam grup guru tanpa nama","Membicarakannya agar mendapat lebih banyak pendapat"],"correct":1,
+    "explanation":"Informasi yang diperoleh dalam hubungan profesional perlu dikelola secara hati-hati. Penyampaian informasi harus mempunyai kebutuhan profesional yang sah dan proporsional."
+  },
+  {
+    "id":"pg-07","type":"single","chapter":1,"title":"Hak dan Kewajiban",
+    "stimulus":"Seorang guru menuntut sekolah menyediakan lingkungan kerja yang mendukung pelaksanaan tugasnya. Pada saat yang sama, guru tersebut sering tidak menyelesaikan administrasi pembelajaran dan mengabaikan kegiatan evaluasi yang menjadi tanggung jawabnya. Dalam diskusi kelas, mahasiswa diminta melihat hubungan antara hak dan kewajiban. Dosen menegaskan bahwa hak profesional tidak menghapus kewajiban yang melekat pada tugas. Mahasiswa diminta memilih prinsip yang paling tepat.",
+    "prompt":"Kesimpulan yang paling tepat adalah ...",
+    "options":["Hak selalu lebih penting daripada kewajiban","Kewajiban hanya berlaku apabila semua hak sudah terpenuhi","Hak dan kewajiban perlu dipahami secara seimbang dalam praktik profesional","Profesional tidak perlu menuntut hak"],"correct":2,
+    "explanation":"Profesional berhak memperoleh dukungan dan perlindungan yang layak sekaligus wajib melaksanakan tugas dan tanggung jawab profesinya."
+  },
+  {
+    "id":"pg-08","type":"single","chapter":1,"title":"Akuntabilitas",
+    "stimulus":"Guru A melakukan kesalahan ketika memasukkan nilai siswa. Setelah mengetahui kesalahan tersebut, ia dapat menyembunyikannya karena kemungkinan tidak diketahui siswa. Namun, ia memilih memeriksa kembali data, memperbaiki nilai, dan menjelaskan koreksi kepada pihak terkait. Ia juga mengubah prosedur kerja agar kesalahan serupa tidak berulang. Tindakannya menunjukkan kesiapan mempertanggungjawabkan keputusan profesional.",
+    "prompt":"Perilaku tersebut terutama menunjukkan ...",
+    "options":["Tanggung jawab profesional","Persaingan profesional","Hak profesional","Senioritas profesional"],"correct":0,
+    "explanation":"Mengakui kesalahan, memperbaikinya, dan mencegah pengulangan merupakan bentuk akuntabilitas serta tanggung jawab profesional."
+  },
+  {
+    "id":"pg-09","type":"single","chapter":1,"title":"Ekosistem Tenaga Kependidikan",
+    "stimulus":"Seorang siswa mengalami masalah akademik dan administrasi secara bersamaan. Guru mata pelajaran mempunyai informasi tentang perkembangan belajarnya, sedangkan tenaga administrasi memiliki informasi mengenai dokumen yang perlu dilengkapi. Wali kelas juga mengetahui kondisi umum siswa. Semua pihak kemudian berkoordinasi sesuai kewenangan masing-masing. Layanan menjadi lebih cepat karena setiap unsur memberikan kontribusi sesuai perannya.",
+    "prompt":"Situasi ini menunjukkan bahwa ...",
+    "options":["Setiap tenaga pendidikan sebaiknya bekerja secara terpisah","Guru harus menangani seluruh masalah siswa","Layanan pendidikan membutuhkan kolaborasi berbagai peran","Tenaga administrasi tidak berkaitan dengan layanan pendidikan"],"correct":2,
+    "explanation":"Ekosistem pendidikan terdiri dari berbagai peran yang berbeda namun saling melengkapi. Kolaborasi dibutuhkan tanpa menghilangkan batas kewenangan masing-masing."
+  },
+  {
+    "id":"pg-10","type":"single","chapter":1,"title":"Batas Peran Profesional",
+    "stimulus":"Seorang guru diminta menangani persoalan yang sebenarnya membutuhkan kewenangan dan kompetensi petugas lain. Guru tersebut ingin membantu, tetapi menyadari bahwa mengambil alih seluruh tugas dapat menimbulkan kesalahan. Ia menjelaskan batas perannya dan berkoordinasi dengan tenaga kependidikan yang relevan. Guru tetap mendampingi siswa pada bagian yang menjadi tanggung jawabnya. Masalah akhirnya ditangani bersama secara proporsional.",
+    "prompt":"Sikap tersebut menunjukkan ...",
+    "options":["Penolakan terhadap kerja sama","Pemahaman terhadap batas peran dan kolaborasi profesional","Ketidakmampuan bekerja","Penghindaran tanggung jawab"],"correct":1,
+    "explanation":"Profesionalisme mencakup pemahaman terhadap batas kewenangan. Kolaborasi lebih tepat daripada mengambil alih pekerjaan di luar kompetensi atau tanggung jawabnya."
+  },
+
+  {
+    "id":"bs-01","type":"boolean","chapter":2,"title":"Profesi dan Pendapatan",
+    "stimulus":"Seorang mahasiswa berpendapat bahwa selama seseorang mendapat upah, pekerjaannya dapat disebut profesi. Temannya menjelaskan bahwa profesi biasanya membutuhkan kompetensi khusus, standar pelayanan, dan tanggung jawab tertentu. Mereka kemudian membandingkan beberapa pekerjaan dengan menggunakan kriteria tersebut. Hasil diskusi menunjukkan bahwa memperoleh pendapatan bukan satu-satunya karakteristik profesi. Dosen meminta mereka menilai pernyataan berikut berdasarkan hasil analisis tersebut.",
+    "prompt":"Setiap pekerjaan yang menghasilkan pendapatan otomatis merupakan profesi.","correct":false,
+    "explanation":"Salah. Profesi menuntut karakteristik tambahan seperti kompetensi khusus, standar, tanggung jawab profesional, dan norma etik tertentu."
+  },
+  {
+    "id":"bs-02","type":"boolean","chapter":2,"title":"Pengembangan Kompetensi",
+    "stimulus":"Seorang guru merasa pengalaman mengajarnya selama lima belas tahun sudah cukup. Ia tidak lagi mengikuti pelatihan atau memperbarui pengetahuan karena merasa sudah menguasai pekerjaannya. Sementara itu, kurikulum, teknologi, dan karakteristik siswa terus berubah. Rekannya mengingatkan bahwa tuntutan profesi juga berkembang. Mahasiswa diminta menilai sikap guru tersebut.",
+    "prompt":"Profesionalisme dapat dipertahankan tanpa pengembangan kompetensi setelah seseorang memiliki pengalaman panjang.","correct":false,
+    "explanation":"Salah. Pengalaman penting, tetapi profesionalisme membutuhkan pembelajaran dan pengembangan kompetensi secara berkelanjutan."
+  },
+  {
+    "id":"bs-03","type":"boolean","chapter":2,"title":"Refleksi Praktik",
+    "stimulus":"Seorang guru menyadari sebagian siswanya belum memahami materi. Ia memeriksa kembali metode yang digunakan dan mendiskusikan alternatif strategi dengan guru lain. Setelah melakukan perubahan, ia membandingkan hasil belajar sebelum dan sesudah perbaikan. Ia menggunakan hasil tersebut untuk menentukan langkah selanjutnya. Proses itu dilakukan sebagai bagian dari tanggung jawabnya terhadap kualitas pembelajaran.",
+    "prompt":"Evaluasi dan perbaikan praktik merupakan bagian dari perilaku profesional.","correct":true,
+    "explanation":"Benar. Refleksi, evaluasi, dan perbaikan praktik merupakan unsur penting profesionalisme."
+  },
+  {
+    "id":"bs-04","type":"boolean","chapter":2,"title":"Kerahasiaan",
+    "stimulus":"Seorang guru memiliki informasi pribadi mengenai siswa yang diperoleh dalam tugas pendampingan. Ia membagikan cerita tersebut di grup informal karena tidak mencantumkan nama lengkap siswa. Namun, informasi konteks yang dibagikan tetap memungkinkan orang lain mengenali siswa yang dimaksud. Pembagian informasi itu tidak diperlukan untuk kepentingan pendidikan. Dosen meminta mahasiswa menilai aspek etiknya.",
+    "prompt":"Tindakan tersebut tetap dapat menimbulkan persoalan etika meskipun nama siswa tidak disebutkan.","correct":true,
+    "explanation":"Benar. Kerahasiaan tidak hanya ditentukan oleh nama; informasi kontekstual juga dapat membuat seseorang teridentifikasi."
+  },
+  {
+    "id":"bs-05","type":"boolean","chapter":2,"title":"Kode Etik sebagai Pedoman",
+    "stimulus":"Seorang guru menghadapi dilema yang tidak dijelaskan secara rinci dalam prosedur sekolah. Ia mempertimbangkan kode etik, dampak keputusan terhadap siswa, tanggung jawab profesional, dan berkonsultasi dengan pihak yang relevan. Guru tidak hanya memilih tindakan yang paling mudah baginya. Ia membandingkan beberapa pilihan dan konsekuensinya. Keputusan dibuat setelah mempertimbangkan kepentingan profesional yang terlibat.",
+    "prompt":"Kode etik dapat digunakan sebagai salah satu dasar pengambilan keputusan dalam situasi profesional yang kompleks.","correct":true,
+    "explanation":"Benar. Kode etik memberikan orientasi dan prinsip ketika profesional menghadapi situasi yang membutuhkan pertimbangan."
+  },
+  {
+    "id":"bs-06","type":"boolean","chapter":2,"title":"Hak dan Kewajiban",
+    "stimulus":"Seorang guru meminta hak untuk memperoleh lingkungan kerja yang aman dan fasilitas yang mendukung tugas. Pada saat bersamaan, ia memahami bahwa dirinya mempunyai kewajiban melaksanakan pembelajaran dan evaluasi secara bertanggung jawab. Guru melihat hak dan kewajiban sebagai dua aspek yang saling berkaitan. Ia tidak menggunakan tuntutan hak sebagai alasan mengabaikan tugasnya. Kelas kemudian mendiskusikan keseimbangan kedua aspek tersebut.",
+    "prompt":"Memperjuangkan hak profesional berarti seseorang tidak perlu lagi memperhatikan kewajiban profesinya.","correct":false,
+    "explanation":"Salah. Hak dan kewajiban berjalan bersama; menuntut hak tidak menghapus kewajiban profesional."
+  },
+  {
+    "id":"bs-07","type":"boolean","chapter":2,"title":"Memperbaiki Kesalahan",
+    "stimulus":"Seorang guru menyadari telah memberikan informasi yang kurang tepat kepada siswa. Ia segera melakukan klarifikasi, memperbaiki informasi, dan menjelaskan sumber kesalahan. Guru tersebut juga memperbaiki proses persiapannya agar kesalahan serupa tidak berulang. Ia tidak menyalahkan siswa atau pihak lain. Ia bersedia mempertanggungjawabkan tindakannya secara terbuka.",
+    "prompt":"Kesediaan memperbaiki kesalahan merupakan salah satu bentuk tanggung jawab profesional.","correct":true,
+    "explanation":"Benar. Akuntabilitas mencakup kesediaan mengakui, memperbaiki, dan belajar dari kesalahan."
+  },
+  {
+    "id":"bs-08","type":"boolean","chapter":2,"title":"Kolaborasi Ekosistem",
+    "stimulus":"Guru, tenaga administrasi, pustakawan, dan petugas layanan lainnya bekerja dalam satu sekolah. Mereka mempunyai tugas yang berbeda tetapi berkontribusi terhadap kualitas layanan pendidikan. Dalam menangani suatu masalah, mereka dapat saling berkoordinasi sesuai kewenangan. Tidak semua persoalan harus diselesaikan guru seorang diri. Masing-masing peran memiliki kontribusi yang saling melengkapi.",
+    "prompt":"Ekosistem pendidikan membutuhkan keterhubungan dan kolaborasi berbagai peran.","correct":true,
+    "explanation":"Benar. Layanan pendidikan merupakan hasil kerja berbagai peran yang saling terkait dan berkoordinasi."
+  },
+  {
+    "id":"bs-09","type":"boolean","chapter":2,"title":"Batas Kewenangan",
+    "stimulus":"Seorang guru mengetahui ada kesalahan pada dokumen administrasi siswa. Karena bukan orang yang mempunyai kewenangan memperbaiki dokumen tersebut, ia tidak langsung mengubahnya. Ia menyampaikan informasi kepada petugas yang bertanggung jawab dan membantu menyediakan informasi yang dibutuhkan. Proses tersebut dilakukan melalui koordinasi. Guru tetap berkontribusi tanpa mengambil alih fungsi pihak lain.",
+    "prompt":"Kolaborasi profesional dapat dilakukan tanpa mengambil alih kewenangan pihak lain.","correct":true,
+    "explanation":"Benar. Kolaborasi yang sehat menghormati batas peran dan kewenangan sambil tetap berbagi informasi yang relevan."
+  },
+  {
+    "id":"bs-10","type":"boolean","chapter":2,"title":"Koordinasi Layanan",
+    "stimulus":"Dalam sebuah sekolah setiap unit hanya memikirkan tugasnya sendiri. Informasi penting tidak dibagikan bahkan ketika dibutuhkan untuk layanan siswa. Guru dan tenaga kependidikan jarang melakukan koordinasi. Akibatnya beberapa layanan menjadi lambat dan terjadi pekerjaan berulang. Mahasiswa diminta menilai dampak pola kerja tersebut terhadap ekosistem pendidikan.",
+    "prompt":"Tidak adanya koordinasi antarperan dapat memengaruhi kualitas layanan pendidikan.","correct":true,
+    "explanation":"Benar. Kurangnya koordinasi dapat menimbulkan keterlambatan, duplikasi kerja, dan layanan yang tidak terpadu."
+  },
+
+  {
+    "id":"match-01","type":"matching","chapter":3,"title":"Konsep Dasar Profesi",
+    "stimulus":"Sebuah sekolah melakukan orientasi bagi pegawai baru. Dalam kegiatan tersebut dibahas bahwa setiap pekerja mempunyai peran dan tanggung jawab yang berbeda. Beberapa pekerjaan mensyaratkan kompetensi khusus, standar tertentu, dan komitmen etik. Pegawai juga perlu memahami apa yang harus dilakukan dan apa yang menjadi haknya. Dosen meminta mahasiswa menghubungkan istilah dengan makna yang paling tepat.",
+    "prompt":"Jodohkan konsep dengan pengertiannya.",
+    "pairs":[{"id":"a","left":"Profesi","right":"Pekerjaan yang membutuhkan keahlian dan tanggung jawab tertentu"},{"id":"b","left":"Profesionalisme","right":"Komitmen menjalankan pekerjaan berdasarkan standar dan kompetensi"},{"id":"c","left":"Hak","right":"Sesuatu yang patut diterima seseorang dalam kedudukannya"},{"id":"d","left":"Kewajiban","right":"Sesuatu yang harus dilaksanakan sebagai bagian dari tanggung jawab"}],
+    "explanation":"Profesi berkaitan dengan keahlian dan tanggung jawab; profesionalisme dengan kualitas pelaksanaan; hak dengan sesuatu yang diterima; kewajiban dengan sesuatu yang harus dilaksanakan."
+  },
+  {
+    "id":"match-02","type":"matching","chapter":3,"title":"Prinsip Etika",
+    "stimulus":"Seorang guru menghadapi beberapa situasi yang membutuhkan pertimbangan etis. Ada informasi siswa yang harus dijaga, keputusan yang perlu dilakukan secara adil, kesalahan yang harus dipertanggungjawabkan, dan hubungan yang perlu dibangun secara hormat. Dosen meminta mahasiswa tidak hanya menghafal istilah. Mahasiswa harus menghubungkan tindakan nyata dengan prinsip profesional yang sesuai. Setiap pasangan hanya memiliki satu kecocokan paling tepat.",
+    "prompt":"Jodohkan tindakan dengan prinsip etik yang paling sesuai.",
+    "pairs":[{"id":"a","left":"Menjaga informasi pribadi siswa","right":"Kerahasiaan"},{"id":"b","left":"Memperlakukan siswa tanpa favoritisme","right":"Keadilan"},{"id":"c","left":"Mengakui dan memperbaiki kesalahan","right":"Akuntabilitas"},{"id":"d","left":"Berkomunikasi secara hormat","right":"Penghormatan"}],
+    "explanation":"Kerahasiaan melindungi informasi, keadilan mencegah perlakuan sewenang-wenang, akuntabilitas menuntut pertanggungjawaban, dan penghormatan menjaga martabat orang lain."
+  },
+  {
+    "id":"match-03","type":"matching","chapter":3,"title":"Hak, Kewajiban, dan Tanggung Jawab",
+    "stimulus":"Dalam rapat sekolah dibahas beberapa persoalan yang berkaitan dengan guru. Guru membutuhkan lingkungan kerja yang aman dan kesempatan mengembangkan kompetensi. Di sisi lain, pembelajaran harus dilaksanakan secara bertanggung jawab dan informasi peserta didik harus dikelola secara hati-hati. Ketika terjadi kesalahan, guru juga harus melakukan koreksi. Mahasiswa diminta mengelompokkan contoh-contoh tersebut ke dalam konsep yang paling sesuai.",
+    "prompt":"Jodohkan situasi dengan kategorinya.",
+    "pairs":[{"id":"a","left":"Mendapat kesempatan pengembangan kompetensi","right":"Hak profesional"},{"id":"b","left":"Melaksanakan pembelajaran sesuai tugas","right":"Kewajiban profesional"},{"id":"c","left":"Memperbaiki kesalahan penilaian","right":"Tanggung jawab profesional"},{"id":"d","left":"Mendapat perlindungan saat menjalankan tugas","right":"Perlindungan profesional"}],
+    "explanation":"Hak dan perlindungan mendukung pelaksanaan profesi, kewajiban menunjukkan tugas yang harus dilakukan, dan tanggung jawab menuntut akuntabilitas atas keputusan serta hasil kerja."
+  },
+  {
+    "id":"match-04","type":"matching","chapter":3,"title":"Ekosistem Pendidikan",
+    "stimulus":"Seorang siswa membutuhkan berbagai bentuk layanan di sekolah. Ia mempunyai persoalan pembelajaran, membutuhkan dokumen administratif, membutuhkan sumber belajar, dan memerlukan koordinasi mengenai perkembangan belajarnya. Tidak satu pihak pun menangani seluruh kebutuhan tersebut sendirian. Setiap unsur mempunyai fungsi tertentu dalam ekosistem sekolah. Mahasiswa diminta menghubungkan peran dengan kontribusi yang paling relevan.",
+    "prompt":"Jodohkan peran dengan kegiatan yang paling sesuai.",
+    "pairs":[{"id":"a","left":"Guru mata pelajaran","right":"Mengelola proses pembelajaran bidang tertentu"},{"id":"b","left":"Tenaga administrasi","right":"Mengelola layanan dan dokumen administratif"},{"id":"c","left":"Pustakawan","right":"Mendukung akses sumber belajar"},{"id":"d","left":"Wali kelas","right":"Mengkoordinasikan informasi perkembangan siswa di kelas"}],
+    "explanation":"Ekosistem pendidikan bekerja melalui pembagian peran: pembelajaran, administrasi, sumber belajar, dan koordinasi kelas saling melengkapi."
+  },
+  {
+    "id":"match-05","type":"matching","chapter":3,"title":"Profesionalisme dalam Praktik",
+    "stimulus":"Empat guru menghadapi situasi yang berbeda. Guru pertama mengikuti perkembangan bidang ilmu yang diajarkan. Guru kedua berdiskusi dengan kolega ketika menghadapi masalah pembelajaran. Guru ketiga menjaga informasi pribadi siswa. Guru keempat mengakui kesalahan dalam penilaian dan melakukan koreksi. Mahasiswa harus mengidentifikasi nilai profesional yang paling kuat pada setiap tindakan.",
+    "prompt":"Jodohkan tindakan dengan nilai profesional yang paling tepat.",
+    "pairs":[{"id":"a","left":"Memperbarui pengetahuan","right":"Pengembangan kompetensi"},{"id":"b","left":"Berdiskusi dengan kolega","right":"Kolaborasi profesional"},{"id":"c","left":"Menjaga informasi siswa","right":"Kerahasiaan"},{"id":"d","left":"Mengoreksi kesalahan sendiri","right":"Akuntabilitas"}],
+    "explanation":"Pengembangan kompetensi, kolaborasi, kerahasiaan, dan akuntabilitas merupakan unsur berbeda yang bersama-sama membentuk praktik profesional."
+  },
+
+  {
+    "id":"multi-01","type":"multi","chapter":4,"title":"Kompetensi Pedagogik",
+    "stimulus":"Seorang guru akan mengajar kelas dengan kemampuan siswa yang sangat beragam. Sebelum menentukan strategi pembelajaran, ia mempelajari hasil asesmen awal dan karakteristik siswa. Ia kemudian menggunakan beberapa bentuk aktivitas agar siswa dapat belajar sesuai kebutuhan mereka. Setelah pembelajaran, guru melakukan evaluasi dan menggunakan hasilnya untuk memperbaiki kegiatan berikutnya. Dosen meminta mahasiswa mengidentifikasi tindakan yang berkaitan langsung dengan kompetensi pedagogik.",
+    "prompt":"Pilih SEMUA tindakan yang berkaitan dengan kompetensi pedagogik.",
+    "options":["Memahami karakteristik peserta didik","Merancang strategi pembelajaran","Menggunakan hasil evaluasi untuk perbaikan","Menguasai seluruh struktur organisasi sekolah","Memperlakukan semua kebutuhan belajar dengan metode yang selalu sama"],"correct":[0,1,2],
+    "explanation":"Kompetensi pedagogik mencakup pemahaman peserta didik, perencanaan/pelaksanaan pembelajaran, evaluasi, dan tindak lanjut berdasarkan kebutuhan belajar."
+  },
+  {
+    "id":"multi-02","type":"multi","chapter":4,"title":"Kompetensi Profesional",
+    "stimulus":"Seorang guru mengajar mata pelajaran yang berkembang cepat. Ia membaca sumber terbaru, memeriksa keakuratan materi, dan memperdalam konsep yang akan diajarkan. Guru juga menghubungkan materi dengan perkembangan bidang ilmunya. Ia tidak hanya bergantung pada buku yang digunakan bertahun-tahun lalu. Mahasiswa diminta memilih tindakan yang menunjukkan kompetensi profesional.",
+    "prompt":"Pilih SEMUA tindakan yang menunjukkan kompetensi profesional.",
+    "options":["Memperbarui pengetahuan bidang ilmu","Menguasai materi secara mendalam","Memeriksa keakuratan sumber pembelajaran","Menghindari perubahan materi","Menggunakan sumber tanpa mengevaluasi isinya"],"correct":[0,1,2],
+    "explanation":"Kompetensi profesional menekankan penguasaan substansi bidang ilmu, pembaruan pengetahuan, dan penggunaan sumber yang akurat serta dapat dipertanggungjawabkan."
+  },
+  {
+    "id":"multi-03","type":"multi","chapter":4,"title":"Kompetensi Kepribadian",
+    "stimulus":"Seorang guru menjadi wali kelas yang sering berhadapan dengan berbagai masalah siswa. Ia tetap menjaga sikap ketika menghadapi siswa yang melakukan kesalahan. Guru berusaha konsisten antara aturan yang disampaikan dengan perilakunya sendiri. Ia juga bersedia mengakui kesalahan apabila keputusan yang dibuat ternyata kurang tepat. Mahasiswa diminta menilai perilaku yang mencerminkan kompetensi kepribadian.",
+    "prompt":"Pilih SEMUA perilaku yang mencerminkan kompetensi kepribadian.",
+    "options":["Menunjukkan integritas","Menjadi teladan dalam perilaku","Bertanggung jawab atas keputusan","Mempermalukan siswa ketika melakukan kesalahan","Menggunakan kewenangan untuk kepentingan pribadi"],"correct":[0,1,2],
+    "explanation":"Kompetensi kepribadian berkaitan dengan integritas, keteladanan, kedewasaan, stabilitas, dan tanggung jawab dalam perilaku profesional."
+  },
+  {
+    "id":"multi-04","type":"multi","chapter":4,"title":"Kompetensi Sosial",
+    "stimulus":"Seorang siswa mengalami penurunan prestasi. Guru berkomunikasi dengan siswa untuk memahami situasinya dan kemudian berkoordinasi dengan wali kelas. Bila diperlukan, informasi yang relevan disampaikan kepada orang tua melalui komunikasi yang tepat. Guru juga berdiskusi dengan tenaga kependidikan lain sesuai kebutuhan siswa. Mahasiswa diminta memilih tindakan yang berkaitan dengan kompetensi sosial.",
+    "prompt":"Pilih SEMUA tindakan yang berkaitan dengan kompetensi sosial.",
+    "options":["Berkomunikasi secara efektif dengan siswa","Berkoordinasi dengan rekan kerja","Berkomunikasi secara tepat dengan orang tua","Menyimpan semua persoalan tanpa koordinasi","Menganggap tenaga kependidikan lain tidak relevan"],"correct":[0,1,2],
+    "explanation":"Kompetensi sosial tampak dalam komunikasi dan kolaborasi efektif dengan peserta didik, kolega, orang tua, dan unsur lain dalam lingkungan pendidikan."
+  },
+  {
+    "id":"multi-05","type":"multi","chapter":4,"title":"Integrasi Empat Kompetensi",
+    "stimulus":"Seorang guru merancang pembelajaran baru. Ia menguasai materi yang akan dibahas, mempertimbangkan karakteristik siswa, berkomunikasi dengan kolega, serta menjaga sikap profesional selama proses pembelajaran. Ketika menemukan kesulitan, ia mengevaluasi tindakannya dan melakukan perbaikan. Situasi tersebut menunjukkan bahwa praktik guru sering membutuhkan beberapa kompetensi sekaligus. Mahasiswa diminta menghubungkan tindakan dengan empat kompetensi guru.",
+    "prompt":"Pilih SEMUA pernyataan yang tepat.",
+    "options":["Memahami siswa berkaitan dengan kompetensi pedagogik","Penguasaan materi berkaitan dengan kompetensi profesional","Komunikasi dengan kolega berkaitan dengan kompetensi sosial","Integritas berkaitan dengan kompetensi kepribadian","Guru hanya membutuhkan satu kompetensi pada satu waktu"],"correct":[0,1,2,3],
+    "explanation":"Praktik guru bersifat integratif: pedagogik, profesional, sosial, dan kepribadian sering digunakan secara bersamaan dalam satu situasi."
+  },
+  {
+    "id":"multi-06","type":"multi","chapter":4,"title":"Pedagogik dalam Situasi Kelas",
+    "stimulus":"Dalam satu kelas terdapat siswa yang cepat memahami materi dan siswa yang membutuhkan penjelasan tambahan. Guru tidak langsung menyimpulkan bahwa siswa yang lambat tidak mampu belajar. Ia mencari informasi mengenai kesulitan yang dialami siswa dan menyesuaikan kegiatan pembelajaran. Hasil asesmen digunakan untuk menentukan tindak lanjut. Guru berupaya membuat keputusan berdasarkan kebutuhan belajar yang nyata.",
+    "prompt":"Pilih SEMUA tindakan yang tepat terkait kompetensi pedagogik.",
+    "options":["Menggunakan asesmen untuk memahami kebutuhan siswa","Menyesuaikan strategi pembelajaran","Memberikan tindak lanjut berdasarkan hasil belajar","Memberi metode sama tanpa mempertimbangkan perbedaan","Memberi label negatif kepada siswa yang kesulitan"],"correct":[0,1,2],
+    "explanation":"Pedagogik menuntut pemahaman terhadap perbedaan peserta didik, penggunaan asesmen, penyesuaian strategi, dan tindak lanjut pembelajaran."
+  },
+  {
+    "id":"multi-07","type":"multi","chapter":4,"title":"Profesional dalam Sumber Digital",
+    "stimulus":"Seorang guru menemukan video pembelajaran populer di internet. Video tersebut terlihat menarik, tetapi terdapat beberapa informasi yang belum tentu sesuai dengan materi ilmiah. Guru memeriksa sumber, membandingkan informasi dengan referensi lain, dan memperbaiki bagian yang kurang tepat sebelum menggunakannya. Ia juga menjelaskan kepada siswa pentingnya mengevaluasi sumber informasi. Mahasiswa diminta menentukan praktik yang menunjukkan kompetensi profesional.",
+    "prompt":"Pilih SEMUA praktik yang menunjukkan kompetensi profesional.",
+    "options":["Mengevaluasi keakuratan konten","Membandingkan dengan referensi terpercaya","Memperbarui pemahaman materi","Menggunakan konten hanya karena populer","Mengabaikan kesalahan selama videonya menarik"],"correct":[0,1,2],
+    "explanation":"Profesionalisme dalam bidang ilmu menuntut kemampuan menilai sumber, menjaga keakuratan materi, dan terus memperbarui pemahaman."
+  },
+  {
+    "id":"multi-08","type":"multi","chapter":4,"title":"Kepribadian dan Etika",
+    "stimulus":"Seorang siswa mengkritik penjelasan guru di kelas. Guru awalnya merasa tidak nyaman, tetapi tidak langsung memarahi siswa. Ia memeriksa kembali materi dan ternyata menemukan bagian yang kurang tepat. Guru mengakui kesalahannya dan memperbaiki penjelasan di depan kelas. Dosen meminta mahasiswa mengidentifikasi perilaku yang menunjukkan kompetensi kepribadian.",
+    "prompt":"Pilih SEMUA tindakan yang tepat berkaitan dengan kompetensi kepribadian.",
+    "options":["Bersikap terbuka terhadap koreksi","Menunjukkan tanggung jawab","Menjaga kedewasaan dalam bersikap","Mempertahankan pendapat demi menjaga wibawa","Menghukum siswa karena menyampaikan koreksi"],"correct":[0,1,2],
+    "explanation":"Keterbukaan terhadap koreksi, tanggung jawab, dan kedewasaan adalah bagian penting dari kepribadian profesional seorang guru."
+  },
+  {
+    "id":"multi-09","type":"multi","chapter":4,"title":"Sosial dalam Ekosistem Pendidikan",
+    "stimulus":"Seorang guru menemukan siswa sering terlambat menyelesaikan tugas karena masalah tertentu. Guru tidak langsung memberikan label malas kepada siswa. Ia berbicara dengan siswa, berkoordinasi dengan wali kelas, dan apabila diperlukan melibatkan orang tua serta pihak sekolah yang relevan. Informasi dibagikan sebatas yang diperlukan untuk penanganan masalah. Mahasiswa diminta menilai tindakan yang mencerminkan kompetensi sosial.",
+    "prompt":"Pilih SEMUA tindakan yang mencerminkan kompetensi sosial.",
+    "options":["Komunikasi empatik dengan siswa","Koordinasi dengan kolega","Komunikasi dengan orang tua secara proporsional","Menyebarkan masalah siswa kepada semua guru","Bekerja sendiri tanpa berkomunikasi"],"correct":[0,1,2],
+    "explanation":"Kompetensi sosial menuntut komunikasi empatik, kolaborasi, dan kemampuan berbagi informasi secara proporsional dengan pihak yang relevan."
+  },
+  {
+    "id":"multi-10","type":"multi","chapter":4,"title":"Final Case: Profesionalisme, Etika, dan Kompetensi",
+    "stimulus":"Seorang guru mengetahui salah satu siswa mengalami masalah keluarga yang memengaruhi pembelajaran. Beberapa siswa lain mulai bertanya mengenai penyebab perubahan perilaku teman mereka. Guru harus tetap membantu siswa tersebut tanpa membuka informasi pribadi yang tidak perlu diketahui orang lain. Ia juga perlu menyesuaikan dukungan pembelajaran dan berkoordinasi dengan pihak yang memang memiliki kepentingan profesional. Keputusan harus mempertimbangkan etika sekaligus kebutuhan pendidikan siswa.",
+    "prompt":"Pilih SEMUA tindakan yang tepat dalam situasi tersebut.",
+    "options":["Menjaga kerahasiaan informasi pribadi siswa","Menyesuaikan dukungan pembelajaran dengan kebutuhan siswa","Berkoordinasi dengan pihak yang relevan secara profesional","Menceritakan masalah siswa agar teman-temannya memahami keadaan","Tetap memperlakukan siswa dengan hormat dan adil"],"correct":[0,1,2,4],
+    "explanation":"Kasus ini mengintegrasikan pedagogik, sosial, kepribadian, dan etika profesi: jaga kerahasiaan, berikan dukungan yang sesuai, koordinasikan secara proporsional, dan tetap hormati siswa."
+  }
+]
