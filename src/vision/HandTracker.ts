@@ -13,11 +13,14 @@ interface ResultLike {
   landmarks?: NormalizedPoint[][];
 }
 
-interface PinchMemory {
+interface BinaryGestureMemory {
   stable: boolean;
   candidate: boolean;
   candidateSince: number;
 }
+
+type PinchMemory = BinaryGestureMemory;
+type FistMemory = BinaryGestureMemory;
 
 export interface HandTrackerCallbacks {
   onFrames: (frames: Map<PlayerId, HandFrame>) => void;
@@ -47,6 +50,10 @@ export class HandTracker {
   private lastVideoTime = -1;
   private smoothCursor: Partial<Record<PlayerId, Point>> = {};
   private pinchMemory: Record<PlayerId, PinchMemory> = {
+    1: { stable: false, candidate: false, candidateSince: 0 },
+    2: { stable: false, candidate: false, candidateSince: 0 }
+  };
+  private fistMemory: Record<PlayerId, FistMemory> = {
     1: { stable: false, candidate: false, candidateSince: 0 },
     2: { stable: false, candidate: false, candidateSince: 0 }
   };
@@ -209,12 +216,16 @@ export class HandTracker {
       const handScale = Math.max(0.02, distance(wrist, middleMcp));
       const pinchRatio = distance(thumb, index) / handScale;
       const pinch = this.updatePinch(playerId, pinchRatio, now);
+      const fistScore = this.closedFistScore(hand.landmarks);
+      const fist = this.updateFist(playerId, fistScore, now);
 
       frames.set(playerId, {
         playerId,
         cursor,
         pinch,
         pinchRatio,
+        fist,
+        fistScore,
         landmarks: hand.mapped,
         seenAt: now
       });
@@ -239,6 +250,71 @@ export class HandTracker {
     }
 
     return memory.stable;
+  }
+
+
+  private updateFist(playerId: PlayerId, score: number, now: number): boolean {
+    const memory = this.fistMemory[playerId];
+    const rawCandidate = memory.stable
+      ? score >= APP_CONFIG.fist.releaseScore
+      : score >= APP_CONFIG.fist.engageScore;
+
+    if (rawCandidate !== memory.candidate) {
+      memory.candidate = rawCandidate;
+      memory.candidateSince = now;
+    }
+
+    if (memory.stable !== memory.candidate && now - memory.candidateSince >= APP_CONFIG.fist.debounceMs) {
+      memory.stable = memory.candidate;
+    }
+
+    return memory.stable;
+  }
+
+  private closedFistScore(points: NormalizedPoint[]): number {
+    const wrist = points[0];
+    if (!wrist) return 0;
+    const fingers = [
+      [5, 6, 8],
+      [9, 10, 12],
+      [13, 14, 16],
+      [17, 18, 20]
+    ] as const;
+
+    let total = 0;
+    let strongExtended = 0;
+    for (const [mcpIndex, pipIndex, tipIndex] of fingers) {
+      const mcp = points[mcpIndex];
+      const pip = points[pipIndex];
+      const tip = points[tipIndex];
+      if (!mcp || !pip || !tip) continue;
+
+      const angle = this.angleDeg(mcp, pip, tip);
+      const angleCurl = clamp((155 - angle) / 55, 0, 1);
+      const pipDistance = Math.max(0.0001, distance(wrist, pip));
+      const foldRatio = distance(wrist, tip) / pipDistance;
+      const foldCurl = clamp((1.12 - foldRatio) / 0.34, 0, 1);
+      total += angleCurl * 0.72 + foldCurl * 0.28;
+
+      if (angle > 158 && foldRatio > 1.06) strongExtended += 1;
+    }
+
+    let score = total / 4;
+    // Hindari salah baca gesture A/B/C/D sebagai kepalan: satu jari yang
+    // benar-benar lurus sudah cukup untuk menurunkan confidence secara tajam.
+    if (strongExtended >= 1) score *= 0.22;
+    return clamp(score, 0, 1);
+  }
+
+  private angleDeg(a: NormalizedPoint, b: NormalizedPoint, c: NormalizedPoint): number {
+    const v1x = a.x - b.x;
+    const v1y = a.y - b.y;
+    const v2x = c.x - b.x;
+    const v2y = c.y - b.y;
+    const dot = v1x * v2x + v1y * v2y;
+    const mag = Math.hypot(v1x, v1y) * Math.hypot(v2x, v2y);
+    if (!mag) return 0;
+    return Math.acos(clamp(dot / mag, -1, 1)) * 180 / Math.PI;
   }
 
   private normalizedToClient(point: NormalizedPoint): Point {

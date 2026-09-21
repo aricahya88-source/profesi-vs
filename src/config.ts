@@ -1,10 +1,18 @@
 export const APP_CONFIG = {
   gestureHoldMs: 480,
-  lockHoldMs: 720,
+  lockHoldMs: 680,
   gestureCooldownMs: 850,
+  selectionCooldownMs: 120,
+  lockDropoutGraceMs: 220,
+  maxHoldFrameDeltaMs: 90,
   inferenceIntervalMs: 34,
   handLostCancelMs: 650,
   cursorSmoothing: 0.42,
+  fist: {
+    engageScore: 0.52,
+    releaseScore: 0.36,
+    debounceMs: 80
+  },
   pinch: {
     engageRatio: 0.38,
     releaseRatio: 0.52,

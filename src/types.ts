@@ -43,6 +43,8 @@ export interface HandFrame {
   cursor: Point;
   pinch: boolean;
   pinchRatio: number;
+  fist: boolean;
+  fistScore: number;
   landmarks: Point[];
   seenAt: number;
 }

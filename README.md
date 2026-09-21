@@ -1,4 +1,4 @@
-# Profesi Kependidikan Versus v1.3
+# Profesi Kependidikan Versus v1.5
 
 Website statis berbasis Vite + TypeScript + MediaPipe Hand Landmarker untuk permainan kelas **2 tim besar × 4 sub-tim**.
 
@@ -57,3 +57,22 @@ npm run check
 - Pilihan tetap dapat diubah sebelum **✊ KUNCI**.
 - Setelah dikunci, otomatis lanjut ke soal berikutnya.
 - Timer tetap **7 menit per babak**.
+
+
+## Perubahan v1.5 — Gesture KUNCI lebih stabil
+- Deteksi ✊ tidak lagi bergantung pada `thumbDirection()`, karena posisi ibu jari sering berubah saat tangan mengepal dan membuat lock terputus.
+- Ditambahkan **fist confidence score** berbasis kelengkungan empat jari dan jarak ujung jari terhadap telapak.
+- Fist memakai **hysteresis + debounce**, sehingga perubahan kecil antar-frame tidak langsung mengubah status kepalan.
+- Hold KUNCI memakai **accumulated hold time**. Frame MediaPipe yang hilang sesaat tidak menghapus progres.
+- Ditambahkan **dropout grace 220 ms** untuk jitter kamera/deteksi.
+- Cooldown gesture dipisah: pilihan jawaban hanya 120 ms, sedangkan lock tetap memiliki cooldown lebih panjang. Ini membuat transisi `pilih → ✊ kunci` jauh lebih responsif.
+- Durasi KUNCI disetel menjadi 680 ms agar tetap disengaja tetapi tidak terasa lambat.
+- Status tangan menampilkan `✊ Kunci terdeteksi (xx%)` saat kepalan stabil, sehingga operator dapat melihat kualitas deteksi secara langsung.
+
+### Parameter yang dapat dituning
+Semua parameter berada di `src/config.ts`:
+- `lockHoldMs`: lama menahan kepalan sebelum submit.
+- `lockDropoutGraceMs`: toleransi putus deteksi singkat.
+- `fist.engageScore`: ambang mulai dianggap kepalan.
+- `fist.releaseScore`: ambang melepas status kepalan.
+- `fist.debounceMs`: waktu stabilisasi deteksi fist.

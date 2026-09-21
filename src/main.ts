@@ -30,7 +30,7 @@ interface PlayerState {
 }
 interface SubTeamState { name: string; score: number; }
 interface TeamState { name: string; subteams: SubTeamState[]; }
-interface HoldState { key: string; since: number; fired: boolean; }
+interface HoldState { key: string; accumulatedMs: number; lastUpdateAt: number; lastActiveAt: number; fired: boolean; }
 interface DragState { leftId: string; ghost: HTMLElement; }
 
 const players: Record<PlayerId, PlayerState> = {
@@ -53,8 +53,8 @@ let mouseMode = false;
 let lastSeen: Record<PlayerId, number> = { 1: 0, 2: 0 };
 let previousPinch: Record<PlayerId, boolean> = { 1: false, 2: false };
 let gestureHold: Record<PlayerId, HoldState> = {
-  1: { key: "", since: 0, fired: false },
-  2: { key: "", since: 0, fired: false }
+  1: { key: "", accumulatedMs: 0, lastUpdateAt: 0, lastActiveAt: 0, fired: false },
+  2: { key: "", accumulatedMs: 0, lastUpdateAt: 0, lastActiveAt: 0, fired: false }
 };
 let gestureCooldownUntil: Record<PlayerId, number> = { 1: 0, 2: 0 };
 const gestureDrag: Partial<Record<PlayerId, DragState>> = {};
@@ -683,21 +683,29 @@ function handleFrames(frames: Map<PlayerId, HandFrame>): void {
       cursor.classList.add("visible"); cursor.classList.toggle("pinching", frame.pinch);
       cursor.style.transform = `translate3d(${frame.cursor.x}px, ${frame.cursor.y}px, 0) translate(-50%, -50%)`;
       must(`#handDot${id}`).classList.add("online");
-      must(`#handText${id}`).textContent = frame.pinch ? "Pinch terdeteksi" : "Tangan terdeteksi";
+      must(`#handText${id}`).textContent = frame.fist
+        ? `✊ Kunci terdeteksi (${Math.round(frame.fistScore * 100)}%)`
+        : frame.pinch ? "Pinch terdeteksi" : "Tangan terdeteksi";
       if (!mouseMode && canSubmit(id)) handleGesture(id, frame, now);
       previousPinch[id] = frame.pinch;
-    } else if (now - lastSeen[id] > APP_CONFIG.handLostCancelMs) {
-      cursor.classList.remove("visible", "pinching");
-      must(`#handDot${id}`).classList.remove("online"); must(`#handText${id}`).textContent = "Tangan belum terdeteksi";
-      if (gestureDrag[id]) cancelGestureDrag(id);
-      previousPinch[id] = false; resetGestureHold(id);
+    } else {
+      const missingFor = now - lastSeen[id];
+      if (gestureHold[id].key.startsWith("lock-") && missingFor > APP_CONFIG.lockDropoutGraceMs) {
+        resetGestureHold(id);
+      }
+      if (missingFor > APP_CONFIG.handLostCancelMs) {
+        cursor.classList.remove("visible", "pinching");
+        must(`#handDot${id}`).classList.remove("online"); must(`#handText${id}`).textContent = "Tangan belum terdeteksi";
+        if (gestureDrag[id]) cancelGestureDrag(id);
+        previousPinch[id] = false; resetGestureHold(id);
+      }
     }
   }
 }
 
 function handleGesture(id: PlayerId, frame: HandFrame, now: number): void {
   const q = currentQuestionFor(id); if (!q || now < gestureCooldownUntil[id]) return;
-  const fist = isClosedFist(frame.landmarks);
+  const fist = frame.fist;
 
   if (q.type === "single") {
     if (fist) {
@@ -738,15 +746,45 @@ function handleGesture(id: PlayerId, frame: HandFrame, now: number): void {
 
 function handleHeldGesture(id: PlayerId, key: string, now: number, label: string, fire: () => void, durationMs: number = APP_CONFIG.gestureHoldMs): void {
   const hold = gestureHold[id];
-  if (!key) { resetGestureHold(id); setGestureMessage(id, label, 0); return; }
-  if (hold.key !== key) { hold.key = key; hold.since = now; hold.fired = false; }
-  const progress = Math.min(1, (now - hold.since) / durationMs);
+  const continuingLock = hold.key.startsWith("lock-");
+
+  if (!key) {
+    if (continuingLock && now - hold.lastActiveAt <= APP_CONFIG.lockDropoutGraceMs) {
+      hold.lastUpdateAt = now;
+      const progress = Math.min(1, hold.accumulatedMs / durationMs);
+      setGestureMessage(id, "✊ sinyal sesaat hilang • pertahankan kepalan", progress * 100);
+      return;
+    }
+    resetGestureHold(id);
+    setGestureMessage(id, label, 0);
+    return;
+  }
+
+  if (hold.key !== key) {
+    hold.key = key;
+    hold.accumulatedMs = 0;
+    hold.lastUpdateAt = now;
+    hold.lastActiveAt = now;
+    hold.fired = false;
+  } else {
+    const delta = Math.min(APP_CONFIG.maxHoldFrameDeltaMs, Math.max(0, now - hold.lastUpdateAt));
+    hold.accumulatedMs += delta;
+    hold.lastUpdateAt = now;
+    hold.lastActiveAt = now;
+  }
+
+  const progress = Math.min(1, hold.accumulatedMs / durationMs);
   setGestureMessage(id, label, progress * 100);
   if (progress >= 1 && !hold.fired) {
-    hold.fired = true; gestureCooldownUntil[id] = now + APP_CONFIG.gestureCooldownMs; fire();
+    hold.fired = true;
+    const cooldown = key.startsWith("lock-") ? APP_CONFIG.gestureCooldownMs : APP_CONFIG.selectionCooldownMs;
+    gestureCooldownUntil[id] = now + cooldown;
+    fire();
   }
 }
-function resetGestureHold(id: PlayerId): void { gestureHold[id] = { key: "", since: 0, fired: false }; }
+function resetGestureHold(id: PlayerId): void {
+  gestureHold[id] = { key: "", accumulatedMs: 0, lastUpdateAt: 0, lastActiveAt: 0, fired: false };
+}
 function setGestureMessage(id: PlayerId, label: string, pct: number): void {
   must(`#gestureLabel${id}`).textContent = label;
   must<HTMLElement>(`#gestureBar${id}`).style.width = `${Math.max(0, Math.min(100, pct))}%`;
@@ -832,10 +870,6 @@ function isThumbExtendedForILoveYou(points: {x:number;y:number}[]): boolean {
   return thumbStraight && thumbReach > palmWidth * 0.42 && thumbFromPalm > palmWidth * 0.33;
 }
 
-function isClosedFist(points: {x:number;y:number}[]): boolean {
-  const f = fingerFlags(points);
-  return !f.index && !f.middle && !f.ring && !f.pinky && thumbDirection(points) === 0;
-}
 
 function countExtendedFingers(points: {x:number;y:number}[]): number {
   const fingers = [[5,6,8],[9,10,12],[13,14,16],[17,18,20]] as const;
